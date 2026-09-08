@@ -1,0 +1,18 @@
+# FROZEN: see docs/PROJECT_BRIEF.md, Section 3.
+
+# Per-machine credentials - never commit real DB/gateway secrets.
+/config/config.local.php
+
+# Uploaded part images stay local to whichever machine received them.
+/uploads/parts/*
+!/uploads/parts/.gitkeep
+
+# Runtime logs (e.g. logs/mail.log from the password-reset flow).
+/logs/*
+!/logs/.gitkeep
+
+# Editor/OS noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

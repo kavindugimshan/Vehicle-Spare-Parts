@@ -1,0 +1,581 @@
+/* =====================================================================
+   assets/css/base.css
+   FROZEN: see docs/PROJECT_BRIEF.md, Section 3, Rule 2.
+
+   Reset, layout, typography, buttons, forms, cards and alerts shared by
+   every page. Every page loads this file, then its own module
+   stylesheet. Module stylesheets prefix their classes (cat-, ord-,
+   adm-, auth-) so nothing here collides with them.
+   ===================================================================== */
+
+:root {
+    --color-primary: #1a3c6e;
+    --color-primary-dark: #12294d;
+    --color-accent: #d9782d;
+    --color-success: #1f7a4d;
+    --color-danger: #b3261e;
+    --color-warning: #8a6100;
+    --color-info: #1d5f8a;
+    --color-text: #1f2430;
+    --color-text-muted: #5c6472;
+    --color-border: #dde1e7;
+    --color-bg: #f5f6f8;
+    --color-surface: #ffffff;
+    --radius: 8px;
+    --font-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-base);
+    color: var(--color-text);
+    background: var(--color-bg);
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.site-main {
+    flex: 1 0 auto;
+    padding: 1.5rem 0 3rem;
+}
+
+.container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.25;
+    margin-top: 0;
+}
+
+/* --- Navbar ----------------------------------------------------------- */
+
+.navbar-main {
+    background: var(--color-primary);
+    padding: 0.75rem 0;
+}
+
+.navbar-main .navbar-brand {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.navbar-main .nav-link {
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.navbar-main .nav-link:hover,
+.navbar-main .navbar-brand:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav-cart-link {
+    position: relative;
+}
+
+.nav-cart-badge {
+    display: inline-block;
+    background: var(--color-accent);
+    color: #fff;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    padding: 0.05rem 0.4rem;
+    margin-left: 0.25rem;
+    font-weight: 700;
+}
+
+/* --- Footer ------------------------------------------------------------ */
+
+.site-footer {
+    flex-shrink: 0;
+    background: var(--color-primary-dark);
+    color: rgba(255, 255, 255, 0.75);
+    padding: 1.25rem 0;
+    margin-top: 2rem;
+}
+
+.site-footer-inner {
+    text-align: center;
+}
+
+.site-footer p {
+    margin: 0.15rem 0;
+}
+
+.site-footer-note {
+    font-size: 0.85rem;
+}
+
+/* --- Buttons ------------------------------------------------------------ */
+
+.btn {
+    display: inline-block;
+    font-weight: 500;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    padding: 0.5rem 1.1rem;
+    font-size: 0.95rem;
+    border-radius: var(--radius);
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn:hover {
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: var(--color-primary-dark);
+    color: #fff;
+}
+
+.btn-accent {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
+}
+
+.btn-accent:hover {
+    filter: brightness(0.92);
+    color: #fff;
+}
+
+.btn-outline {
+    background: transparent;
+    border-color: var(--color-border);
+    color: var(--color-text);
+}
+
+.btn-outline:hover {
+    background: var(--color-bg);
+}
+
+.btn-danger {
+    background: var(--color-danger);
+    border-color: var(--color-danger);
+    color: #fff;
+}
+
+.btn-danger:hover {
+    filter: brightness(0.92);
+    color: #fff;
+}
+
+.btn-sm {
+    padding: 0.3rem 0.7rem;
+    font-size: 0.85rem;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+/* --- Forms --------------------------------------------------------------- */
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.95rem;
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(26, 60, 110, 0.15);
+}
+
+.form-control.is-invalid {
+    border-color: var(--color-danger);
+}
+
+.form-hint {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-top: 0.25rem;
+}
+
+.form-error {
+    font-size: 0.8rem;
+    color: var(--color-danger);
+    margin-top: 0.25rem;
+}
+
+/* --- Cards ----------------------------------------------------------------- */
+
+.card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+}
+
+.card + .card {
+    margin-top: 1rem;
+}
+
+.card-title {
+    margin-bottom: 0.75rem;
+}
+
+/* --- Alerts / flash messages ------------------------------------------------ */
+
+.alert {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+    border: 1px solid transparent;
+    margin: 1rem 0;
+}
+
+.alert-success { background: #e7f6ee; border-color: #b7e4c9; color: var(--color-success); }
+.alert-error   { background: #fbe9e8; border-color: #f0bdb9; color: var(--color-danger); }
+.alert-warning { background: #fdf3d9; border-color: #f0dd9b; color: var(--color-warning); }
+.alert-info    { background: #e4f1f8; border-color: #b7d9ea; color: var(--color-info); }
+
+.alert-close {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.7;
+}
+
+.alert-close:hover {
+    opacity: 1;
+}
+
+/* --- Status badges (shared visual language across modules) ----------------- */
+
+.badge-status {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.badge-status--pending   { background: #fdf3d9; color: var(--color-warning); }
+.badge-status--confirmed,
+.badge-status--in-progress,
+.badge-status--info      { background: #e4f1f8; color: var(--color-info); }
+.badge-status--shipped   { background: #e7e5fb; color: #4b3fa8; }
+.badge-status--delivered,
+.badge-status--fulfilled,
+.badge-status--success   { background: #e7f6ee; color: var(--color-success); }
+.badge-status--cancelled,
+.badge-status--rejected,
+.badge-status--failed    { background: #fbe9e8; color: var(--color-danger); }
+
+/* --- Part thumbnail placeholder (Section 12) -------------------------------- */
+
+.part-thumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #eef1f6, #dfe4ec);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    color: var(--color-text-muted);
+    font-weight: 700;
+    overflow: hidden;
+}
+
+.part-thumb--sm { width: 48px; height: 48px; font-size: 0.85rem; }
+.part-thumb--md { width: 100px; height: 100px; font-size: 1.3rem; }
+.part-thumb--lg { width: 260px; height: 260px; font-size: 2.4rem; }
+
+/* --- Utility --------------------------------------------------------------- */
+
+.text-muted { color: var(--color-text-muted); }
+.text-center { text-align: center; }
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+
+/* --- Generic table ----------------------------------------------------------- */
+
+.table-plain {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--color-surface);
+}
+
+.table-plain th,
+.table-plain td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.table-plain th {
+    background: var(--color-bg);
+    font-weight: 600;
+}
+
+/* --- Pagination -------------------------------------------------------------- */
+
+.pagination-plain {
+    display: flex;
+    gap: 0.4rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.pagination-plain a,
+.pagination-plain span {
+    padding: 0.4rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    color: var(--color-text);
+}
+
+.pagination-plain a:hover {
+    background: var(--color-bg);
+    text-decoration: none;
+}
+
+.pagination-plain .is-active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+}
+
+/* --- Storefront landing page (index.php) ------------------------------------ */
+
+.home-hero {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    color: #fff;
+    padding: 3rem 0;
+    text-align: center;
+}
+
+.home-hero h1 {
+    margin-bottom: 0.5rem;
+}
+
+.home-hero .text-muted {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.home-hero-search {
+    display: flex;
+    gap: 0.5rem;
+    max-width: 560px;
+    margin: 1.5rem auto 0;
+}
+
+.home-hero-search .form-control {
+    flex: 1;
+}
+
+.home-section {
+    margin-top: 2.5rem;
+}
+
+.home-category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.75rem;
+}
+
+.home-category-tile {
+    display: block;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    text-align: center;
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+.home-category-tile:hover {
+    border-color: var(--color-primary);
+    text-decoration: none;
+}
+
+.home-part-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+}
+
+.home-part-card {
+    display: block;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    text-align: center;
+    color: var(--color-text);
+}
+
+.home-part-card:hover {
+    border-color: var(--color-primary);
+    text-decoration: none;
+}
+
+.home-part-card .part-thumb {
+    margin: 0 auto 0.5rem;
+}
+
+.home-part-name {
+    font-weight: 500;
+    margin: 0.25rem 0 0;
+}
+
+.home-part-price {
+    color: var(--color-accent);
+    font-weight: 600;
+    margin: 0.15rem 0 0;
+}
+
+/* --- Admin layout shell (includes/admin_sidebar.php is frozen shared chrome,
+   so its structural layout lives here; assets/css/admin.css decorates the
+   page content inside .adm-content) ------------------------------------- */
+
+.adm-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+
+.adm-sidebar {
+    flex: 0 0 220px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: sticky;
+    top: 1rem;
+}
+
+.adm-sidebar-header {
+    background: var(--color-primary-dark);
+    color: #fff;
+    padding: 1rem;
+}
+
+.adm-sidebar-brand {
+    margin: 0;
+    font-weight: 700;
+}
+
+.adm-sidebar-role {
+    margin: 0.15rem 0 0;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.adm-sidebar-user {
+    margin: 0.4rem 0 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.adm-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 0;
+}
+
+.adm-nav-heading {
+    margin: 0.75rem 1rem 0.15rem;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+}
+
+.adm-nav-link {
+    padding: 0.4rem 1rem;
+    color: var(--color-text);
+    font-size: 0.9rem;
+}
+
+.adm-nav-link:hover {
+    background: var(--color-bg);
+    text-decoration: none;
+}
+
+.adm-nav-link.active {
+    background: var(--color-bg);
+    font-weight: 600;
+    border-left: 3px solid var(--color-primary);
+}
+
+.adm-content {
+    flex: 1;
+    min-width: 0;
+}
+
+@media (max-width: 768px) {
+    .adm-layout {
+        flex-direction: column;
+    }
+
+    .adm-sidebar {
+        flex-basis: auto;
+        width: 100%;
+        position: static;
+    }
+}
