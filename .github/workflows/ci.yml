@@ -1,0 +1,135 @@
+# .github/workflows/ci.yml
+# CI pipeline for Vehicle Spare Parts Management System (VSPMS)
+#
+# Runs on every push and pull request to main and all Member-* branches.
+# Steps:
+#   1. PHP syntax lint  – catches parse errors fast, no DB needed
+#   2. Docker build     – verifies the Dockerfile builds cleanly
+#   3. Integration boot – spins up the full docker-compose stack, imports
+#                         the schema + seeds, and checks the app responds
+
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - development
+      - "Member-*"
+  pull_request:
+    branches:
+      - main
+      - development
+
+jobs:
+  # ── 1. PHP Syntax Lint ────────────────────────────────────────────────────
+  lint:
+    name: PHP Syntax Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+
+      - name: Lint all PHP files
+        run: |
+          echo "Running PHP syntax check..."
+          find . -name "*.php" \
+            -not -path "./.git/*" \
+            -not -path "./vendor/*" \
+            | xargs -P4 php -l
+          echo "✅ All PHP files passed syntax check."
+
+  # ── 2. Docker Build ───────────────────────────────────────────────────────
+  docker-build:
+    name: Docker Image Build
+    runs-on: ubuntu-latest
+    needs: lint
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build PHP-Apache image
+        run: |
+          docker build \
+            --file docker/Dockerfile \
+            --tag vspms-php:ci \
+            .
+          echo "✅ Docker image built successfully."
+
+  # ── 3. Integration Boot Test ─────────────────────────────────────────────
+  integration:
+    name: Docker Compose Boot & DB Import
+    runs-on: ubuntu-latest
+    needs: docker-build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Prepare db-init directory (schema + seeds)
+        run: |
+          mkdir -p docker/db-init
+          cp database/schema.sql          docker/db-init/01_schema.sql
+          cp database/seed_core.sql       docker/db-init/02_seed_core.sql
+          cp database/seed_catalogue.sql  docker/db-init/03_seed_catalogue.sql
+          cp database/seed_gateways.sql   docker/db-init/04_seed_gateways.sql
+          echo "✅ DB init files staged."
+
+      - name: Start services
+        run: |
+          docker compose -f docker/docker-compose.yml up -d
+          echo "✅ Services started."
+
+      - name: Wait for MySQL to be healthy
+        run: |
+          echo "Waiting for MySQL health check..."
+          for i in $(seq 1 30); do
+            STATUS=$(docker compose -f docker/docker-compose.yml ps db --format json \
+                     | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('Health',''))" 2>/dev/null || echo "")
+            if [ "$STATUS" = "healthy" ]; then
+              echo "✅ MySQL is healthy."
+              break
+            fi
+            echo "  attempt $i/30 - waiting..."
+            sleep 5
+          done
+
+      - name: Verify app is responding
+        run: |
+          echo "Checking app HTTP response..."
+          for i in $(seq 1 10); do
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/ || echo "000")
+            if [ "$CODE" = "200" ] || [ "$CODE" = "302" ]; then
+              echo "✅ App responded with HTTP $CODE."
+              exit 0
+            fi
+            echo "  attempt $i/10 - got $CODE, retrying..."
+            sleep 5
+          done
+          echo "❌ App did not respond successfully."
+          docker compose -f docker/docker-compose.yml logs php
+          exit 1
+
+      - name: Verify DB schema was imported
+        run: |
+          echo "Checking DB tables exist..."
+          TABLE_COUNT=$(docker compose -f docker/docker-compose.yml exec -T db \
+            mysql -uroot -proot vspms_db -se \
+            "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='vspms_db';")
+          echo "  Tables found: $TABLE_COUNT"
+          if [ "$TABLE_COUNT" -lt "1" ]; then
+            echo "❌ No tables found in vspms_db."
+            exit 1
+          fi
+          echo "✅ Database schema imported successfully."
+
+      - name: Tear down services
+        if: always()
+        run: docker compose -f docker/docker-compose.yml down -v
