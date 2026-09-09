@@ -21,10 +21,13 @@ fi
 echo "Importing schema.sql..."
 mysql "${MYSQL_ARGS[@]}" < database/schema.sql
 
-for f in database/seed_*.sql; do
-    [ -e "$f" ] || continue
-    echo "Importing $f..."
-    mysql "${MYSQL_ARGS[@]}" "$DB_NAME" < "$f"
-done
+echo "Importing seed_core.sql..."
+[ -f database/seed_core.sql ] && mysql "${MYSQL_ARGS[@]}" "$DB_NAME" < database/seed_core.sql || true
+
+echo "Importing seed_catalogue.sql..."
+[ -f database/seed_catalogue.sql ] && mysql "${MYSQL_ARGS[@]}" "$DB_NAME" < database/seed_catalogue.sql || true
+
+echo "Importing seed_gateways.sql..."
+[ -f database/seed_gateways.sql ] && mysql "${MYSQL_ARGS[@]}" "$DB_NAME" < database/seed_gateways.sql || true
 
 echo "Done. Database \"$DB_NAME\" is ready."
