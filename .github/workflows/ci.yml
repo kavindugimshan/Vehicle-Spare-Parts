@@ -72,15 +72,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Prepare db-init directory (schema + seeds)
-        run: |
-          mkdir -p docker/db-init
-          cp database/schema.sql          docker/db-init/01_schema.sql
-          cp database/seed_core.sql       docker/db-init/02_seed_core.sql
-          cp database/seed_catalogue.sql  docker/db-init/03_seed_catalogue.sql
-          cp database/seed_gateways.sql   docker/db-init/04_seed_gateways.sql
-          echo "✅ DB init files staged."
-
       - name: Start services
         run: |
           docker compose -f docker/docker-compose.yml up -d
