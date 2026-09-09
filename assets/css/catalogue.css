@@ -1,0 +1,221 @@
+/* assets/css/catalogue.css - grid, filter sidebar, product card, chips.
+   Classes prefixed cat- per docs/PROJECT_BRIEF.md, Section 4. */
+
+.cat-page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.cat-sort-form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.cat-sort-form .form-control {
+    width: auto;
+    min-width: 180px;
+}
+
+.cat-category-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.cat-chip {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: 0.85rem;
+}
+
+.cat-chip:hover {
+    border-color: var(--color-primary);
+    text-decoration: none;
+}
+
+.cat-chip.is-active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+}
+
+.cat-chip.is-removable {
+    background: var(--color-bg);
+}
+
+.cat-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0.75rem 0;
+}
+
+/* --- Product grid + card --- */
+
+.cat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.cat-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    text-align: center;
+}
+
+.cat-card-link {
+    display: block;
+    color: var(--color-text);
+}
+
+.cat-card-link:hover {
+    text-decoration: none;
+}
+
+.cat-card-link .part-thumb {
+    margin: 0 auto 0.5rem;
+}
+
+.cat-card-name {
+    font-weight: 500;
+    margin: 0.25rem 0 0;
+}
+
+.cat-card-meta {
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    margin: 0.15rem 0;
+}
+
+.cat-card-price {
+    color: var(--color-accent);
+    font-weight: 600;
+    margin: 0.15rem 0 0.5rem;
+}
+
+.cat-request-link {
+    display: inline-block;
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
+}
+
+/* --- Search layout: sidebar + results --- */
+
+.cat-search-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+
+.cat-filter-sidebar {
+    flex: 0 0 260px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    position: sticky;
+    top: 1rem;
+}
+
+.cat-search-results {
+    flex: 1;
+    min-width: 0;
+}
+
+.cat-checkbox-list {
+    max-height: 180px;
+    overflow-y: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 0.5rem 0.75rem;
+}
+
+.cat-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    padding: 0.15rem 0;
+}
+
+.cat-checkbox input {
+    margin: 0;
+}
+
+.cat-price-slider {
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.cat-price-range-note {
+    background: #e4f1f8;
+    color: var(--color-info);
+    border: 1px solid #b7d9ea;
+    border-radius: var(--radius);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+    .cat-search-layout {
+        flex-direction: column;
+    }
+
+    .cat-filter-sidebar {
+        flex-basis: auto;
+        width: 100%;
+        position: static;
+    }
+}
+
+/* --- Product detail page --- */
+
+.cat-detail {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.cat-detail-image .part-thumb {
+    margin: 0;
+}
+
+.cat-detail-info {
+    flex: 1;
+    min-width: 260px;
+}
+
+.cat-detail-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    margin: 0.25rem 0;
+}
+
+.cat-detail-specs {
+    margin: 1rem 0;
+}
+
+.cat-detail-specs th {
+    width: 180px;
+    color: var(--color-text-muted);
+    font-weight: 500;
+}
+
+.cat-qty-group {
+    max-width: 140px;
+}
