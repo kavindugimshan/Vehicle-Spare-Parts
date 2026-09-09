@@ -57,10 +57,7 @@ jobs:
 
       - name: Build PHP-Apache image
         run: |
-          docker build \
-            --file docker/Dockerfile \
-            --tag vspms-php:ci \
-            .
+          docker build -f docker/Dockerfile -t vspms-php:ci .
           echo "✅ Docker image built successfully."
 
   # ── 3. Integration Boot Test ─────────────────────────────────────────────
