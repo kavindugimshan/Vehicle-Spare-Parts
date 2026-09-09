@@ -1,0 +1,56 @@
+# docker/docker-compose.yml - optional containerised dev environment.
+# From the project root: docker compose -f docker/docker-compose.yml up
+#
+# Three services: PHP-Apache (the app, mounted live from the project
+# root), MySQL 8.0 (with database/ auto-imported on first start via
+# docker-entrypoint-initdb.d), and phpMyAdmin on port 8081.
+
+services:
+  php:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ..:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_NAME: vspms_db
+      DB_USER: root
+      DB_PASS: root
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: vspms_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - vspms_db_data:/var/lib/mysql
+      - ../database:/seed-source:ro
+      - ./db-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "8081:80"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  vspms_db_data:

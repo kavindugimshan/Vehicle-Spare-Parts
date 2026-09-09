@@ -1,0 +1,206 @@
+/* assets/css/orders.css - cart, checkout, timeline, receipt and print
+   styles. Classes prefixed ord- per docs/PROJECT_BRIEF.md, Section 4. */
+
+.ord-cart-table td {
+    vertical-align: middle;
+}
+
+.ord-qty-input {
+    width: 80px;
+}
+
+.ord-cart-summary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.ord-cart-total {
+    font-weight: 600;
+    margin-right: auto;
+}
+
+.ord-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.ord-filter-bar .form-control {
+    width: auto;
+}
+
+/* --- Checkout --- */
+
+.ord-checkout-layout {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.ord-checkout-layout form {
+    flex: 1;
+    min-width: 280px;
+}
+
+.ord-order-summary {
+    flex: 0 0 300px;
+}
+
+.ord-gateway-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0;
+    font-size: 0.95rem;
+}
+
+.ord-summary-list {
+    list-style: none;
+    margin: 0 0 1rem;
+    padding: 0;
+}
+
+.ord-summary-list li {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    padding: 0.2rem 0;
+    color: var(--color-text-muted);
+}
+
+.ord-order-summary p {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.3rem 0;
+}
+
+.ord-summary-final {
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 0.5rem;
+    margin-top: 0.5rem !important;
+}
+
+/* --- Payment pages --- */
+
+.ord-pay-page,
+.ord-confirmation {
+    padding: 2rem 0;
+}
+
+.ord-pay-card,
+.ord-confirmation-card {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.ord-mock-card-row {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.ord-mock-card-row > div {
+    flex: 1;
+}
+
+.ord-fee-input {
+    width: 90px;
+    display: inline-block;
+}
+
+/* --- Order status timeline --- */
+
+.ord-timeline {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    counter-reset: ord-step;
+}
+
+.ord-timeline li {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    padding-top: 1.75rem;
+}
+
+.ord-timeline li::before {
+    counter-increment: ord-step;
+    content: counter(ord-step);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1.5rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    border-radius: 50%;
+    background: var(--color-border);
+    color: #fff;
+    font-weight: 600;
+}
+
+.ord-timeline li::after {
+    content: '';
+    position: absolute;
+    top: 0.75rem;
+    left: calc(50% + 1rem);
+    width: calc(100% - 1.5rem);
+    height: 2px;
+    background: var(--color-border);
+}
+
+.ord-timeline li:last-child::after {
+    display: none;
+}
+
+.ord-timeline li.is-done {
+    color: var(--color-success);
+    font-weight: 600;
+}
+
+.ord-timeline li.is-done::before {
+    background: var(--color-success);
+}
+
+.ord-timeline li.is-done::after {
+    background: var(--color-success);
+}
+
+/* --- Receipt + print --- */
+
+.ord-receipt-actions {
+    text-align: right;
+    margin-bottom: 1rem;
+}
+
+.ord-receipt-paper {
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 2rem;
+}
+
+@media print {
+    .navbar-main,
+    .site-footer,
+    .no-print {
+        display: none !important;
+    }
+
+    .ord-receipt-paper {
+        border: none;
+        padding: 0;
+    }
+}

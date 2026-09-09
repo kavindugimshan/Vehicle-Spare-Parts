@@ -100,14 +100,32 @@ function paginate(int $total, int $perPage, int $current): array
  * instead of writing its own <img> tag - see docs/PROJECT_BRIEF.md,
  * Section 12, for why that matters.
  *
- * Phase 1: no product imagery exists yet, so this renders a styled empty
- * state showing the part's initials. When imagery is added in the final
- * phase, only this function changes - no other module's files do.
+ * Final phase: when spare_part.imageURL is set, renders an <img> tag;
+ * otherwise falls back to the Phase 1 initials placeholder. This is the
+ * one function Section 12 promised would change - no other module's
+ * files were touched to add imagery.
+ *
+ * imageURL holds one of two kinds of value, distinguished by whether it
+ * contains a "/": a path like "assets/images/parts/engine-parts.svg"
+ * (a bundled category image, relative to BASE_URL - see
+ * database/migrations/003_part_images.sql) never contains a bare
+ * filename, while an admin-uploaded image (Module 4,
+ * admin/lib/inventory_helper.php::invHandleImageUpload()) is always a
+ * random hex filename with no "/" in it, relative to UPLOAD_URL.
  */
 function partImage(array $part, string $size = 'md'): string
 {
-    // Phase 1: no imagery exists yet. Render a styled empty state
-    // showing the part's initials, so cards look deliberate.
+    if (!empty($part['imageURL'])) {
+        $src = str_contains($part['imageURL'], '/')
+            ? BASE_URL . '/' . ltrim($part['imageURL'], '/')
+            : rtrim(UPLOAD_URL, '/') . '/' . $part['imageURL'];
+
+        return '<img class="part-thumb part-thumb--' . e($size) . '" '
+             . 'src="' . e($src) . '" alt="' . e($part['partName'] ?? '') . '">';
+    }
+
+    // No imagery for this part yet. Render a styled empty state showing
+    // the part's initials, so cards still look deliberate.
     $initials = strtoupper(mb_substr($part['partName'] ?? '?', 0, 2));
 
     return '<div class="part-thumb part-thumb--' . e($size) . '">'
